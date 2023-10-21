@@ -10,8 +10,10 @@ import TagIcon from "@mui/icons-material/Tag";
 import CastleIcon from "@mui/icons-material/Castle";
 import TitleIcon from "@mui/icons-material/Title";
 import LanguageIcon from "@mui/icons-material/Language";
-import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import BadgeIcon from "@mui/icons-material/Badge";
+import ColorizeIcon from "@mui/icons-material/Colorize";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import moment from "moment";
 
 const SummaryCard = ({ content }) => {
   return (
@@ -41,7 +43,7 @@ const SummaryCard = ({ content }) => {
           </ListItemIcon>
           <ListItemText primary={content.character.serverType} />
           <ListItemIcon>
-            <AccessibilityIcon />
+            <ColorizeIcon />
           </ListItemIcon>
           <ListItemText primary={content.character.classType} />
         </ListItem>
@@ -53,9 +55,11 @@ const SummaryCard = ({ content }) => {
         </ListItem>
         <ListItem>
           <ListItemIcon>
-            <BadgeIcon />
+            <AccessTimeIcon />
           </ListItemIcon>
-          <ListItemText primary={content.createdAt} />
+          <ListItemText
+            primary={moment(content.createdAt).format("YYYY-MM-DD HH:mm")}
+          />
         </ListItem>
       </List>
     </Paper>
