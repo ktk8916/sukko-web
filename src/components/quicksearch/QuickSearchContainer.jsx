@@ -17,7 +17,7 @@ const QuickSearchContainer = ({
         alignItems: "center",
       }}
     >
-      <Grid container sx={{ width: "70%" }} spacing={3}>
+      <Grid container sx={{ maxWidth: "1400px" }} spacing={3}>
         <Grid item xs={12} md={6}>
           <Chip avatar={<PersonIcon />} label="캐릭터" variant="outlined" />
 
@@ -29,7 +29,11 @@ const QuickSearchContainer = ({
           ))}
         </Grid>
         <Grid item xs={12} md={6}>
-          <Chip avatar={<GroupsIcon />} label="원정대" variant="outlined" />
+          <Chip
+            avatar={<GroupsIcon />}
+            label="원정대캐릭터"
+            variant="outlined"
+          />
           {relationTaxidermys.length === 0 && (
             <NotFoundNotice searchNickname={searchNickname} />
           )}

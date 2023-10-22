@@ -13,7 +13,7 @@ const QuickSearchBar = ({ nickname, onChangHandler, onClickHandler }) => {
           alignItems: "center",
         }}
       >
-        <Grid container spacing={2} sx={{ width: "70%" }}>
+        <Grid container spacing={2} sx={{ maxWidth: "500px" }}>
           <Grid item md={11} xs={11}>
             <TextField
               id="nickname"

@@ -6,7 +6,7 @@ const NotFoundNotice = ({ searchNickname }) => {
   return (
     <Paper
       sx={{
-        height: "420px",
+        height: "320px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -16,6 +16,9 @@ const NotFoundNotice = ({ searchNickname }) => {
       <ThumbUpIcon fontSize="large" />
       <Typography variant="h6" gutterBottom>
         {`${searchNickname} 검색 결과가 없습니다.`}
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        안심하고 함께하세요 !
       </Typography>
     </Paper>
   );

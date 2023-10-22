@@ -32,18 +32,19 @@ const QuickSearch = () => {
       return;
     }
 
-    getRelationTaxidermys();
     setSearchNickname(nickname);
+    getRelationTaxidermys(nickname);
+    getTaxidermys(nickname);
   };
 
-  const getTaxidermys = async () => {
+  const getTaxidermys = async (nickname) => {
     try {
       const response = await getApi(`/api/v1/taxidermy?name=${nickname}`);
       setTaxidermys(response.data);
     } catch (err) {}
   };
 
-  const getRelationTaxidermys = async () => {
+  const getRelationTaxidermys = async (nickname) => {
     try {
       const response = await getApi(
         `/api/v1/taxidermy/relation?name=${nickname}`,
