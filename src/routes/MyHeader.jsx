@@ -18,14 +18,14 @@ const MyHeader = () => {
               빠른검색
             </Button>
           </Link>
-          <Link to="/museum">
-            <Button
-              color="inherit"
-              startIcon={<GridViewIcon color="inherit" />}
-            >
-              목록보기
-            </Button>
-          </Link>
+          {/*<Link to="/museum">*/}
+          {/*  <Button*/}
+          {/*    color="inherit"*/}
+          {/*    startIcon={<GridViewIcon color="inherit" />}*/}
+          {/*  >*/}
+          {/*    목록보기*/}
+          {/*  </Button>*/}
+          {/*</Link>*/}
           <Link to="/write">
             <Button color="inherit" startIcon={<EditIcon color="inherit" />}>
               제보
