@@ -4,6 +4,7 @@ import Template from "./Template";
 import QuickSearch from "../pages/QuickSearch";
 import Write from "../pages/Write";
 import TaxidermyDetail from "../pages/TaxidermyDetail";
+import Update from "../pages/Update";
 
 const MyRoute = () => {
   return (
@@ -12,6 +13,7 @@ const MyRoute = () => {
         <Route path="/" element={<QuickSearch />} />
         <Route path="/write" element={<Write />} />
         <Route path="/taxidermy/:id" element={<TaxidermyDetail />} />
+        <Route path="/taxidermy/:id/update" element={<Update />} />
         <Route path="/museum" element={<QuickSearch />} />
       </Route>
     </Routes>
