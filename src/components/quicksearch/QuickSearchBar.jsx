@@ -7,14 +7,15 @@ const QuickSearchBar = ({ nickname, onChangHandler, onClickHandler }) => {
     <>
       <Box
         sx={{
-          height: "360px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginTop: "20px",
+          flexDirection: "column",
         }}
       >
-        <Grid container spacing={2} sx={{ maxWidth: "500px" }}>
-          <Grid item md={11} xs={11}>
+        <Grid container spacing={2} sx={{ maxWidth: "500px" }} mt={"20px"}>
+          <Grid item md={11} xs={12}>
             <TextField
               id="nickname"
               value={nickname}
@@ -24,7 +25,7 @@ const QuickSearchBar = ({ nickname, onChangHandler, onClickHandler }) => {
               onChange={onChangHandler}
             />
           </Grid>
-          <Grid item md={1} xs={1}>
+          <Grid item md={1} xs={12}>
             <Button
               variant="outlined"
               sx={{ height: "100%" }}
