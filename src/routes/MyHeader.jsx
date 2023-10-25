@@ -28,7 +28,7 @@ const MyHeader = () => {
           {/*</Link>*/}
           <Link to="/write">
             <Button color="inherit" startIcon={<EditIcon color="inherit" />}>
-              제보
+              등록
             </Button>
           </Link>
         </Toolbar>
