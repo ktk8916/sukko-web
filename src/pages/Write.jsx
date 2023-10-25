@@ -9,66 +9,55 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Snackbar,
   TextField,
 } from "@mui/material";
 import WriteNotice from "../components/write/WriteNotice";
 import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { getApi, postApi } from "../services/apiClient";
+import { postApi } from "../services/apiClient";
+import { v4 as uuidv4 } from "uuid";
 
 const Write = () => {
-  const [open, setOpen] = React.useState(false);
+  // 작성 내용
   const [title, setTitle] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [password, setPassword] = useState("");
-  const [dungeon, setDungeon] = useState("");
-  const [content, setContent] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const nav = useNavigate();
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
   const titleChangeHandler = (e) => {
     setTitle(e.target.value);
   };
-
+  const [nickname, setNickname] = useState("");
+  const nicknameChangeHandler = (e) => {
+    setNickname(e.target.value);
+  };
+  const [content, setContent] = useState("");
   const contentChangeHandler = (e) => {
     setContent(e.target.value);
   };
+  const [dungeon, setDungeon] = useState("");
 
-  const nicknameChangeHandler = (e) => {
-    setNickname(e.target.value);
+  // nav
+  const nav = useNavigate();
+
+  // 비밀번호 입력창
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
   const passwordChangeHandler = (e) => {
     setPassword(e.target.value);
   };
 
+  // api
   const postClickHandler = () => {
     postTaxidermy();
   };
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
-
   const postTaxidermy = async () => {
     try {
       const response = await postApi(`/api/v1/taxidermy`, {
         title,
         nickname,
         content,
-        password,
+        password: password === "" ? uuidv4() : password,
         dungeon,
       });
       if (response.data.code !== "BAD_REQUEST") {
@@ -156,16 +145,16 @@ const Write = () => {
           </Grid>
           <Grid item md={1} xs={2}>
             <Button
-              sx={{ height: "100%" }}
+              sx={{ height: "100%", width: "100%" }}
               variant="contained"
               onClick={postClickHandler}
             >
-              완료
+              작성
             </Button>
           </Grid>
           <Grid item md={1} xs={2}>
             <Link to="/">
-              <Button sx={{ height: "100%" }} variant="outlined">
+              <Button sx={{ height: "100%", width: "100%" }} variant="outlined">
                 취소
               </Button>
             </Link>
