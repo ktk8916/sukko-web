@@ -8,6 +8,22 @@ const getApi = async (url) => {
     method: "GET",
   });
 };
+
+const putApi = async (url, data) => {
+  return axios({
+    url: url,
+    method: "PUT",
+    data: data,
+  });
+};
+
+const deleteApi = async (url, data) => {
+  return axios({
+    url: url,
+    method: "DELETE",
+    data: data,
+  });
+};
 const postApi = async (url, data) => {
   return axios({
     url: url,
@@ -16,4 +32,4 @@ const postApi = async (url, data) => {
   });
 };
 
-export { getApi, postApi };
+export { getApi, postApi, putApi, deleteApi };
