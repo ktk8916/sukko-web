@@ -1,21 +1,10 @@
 import React, { useState } from "react";
-import {
-  Autocomplete,
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import WriteNotice from "../components/write/WriteNotice";
 import { Link, useNavigate } from "react-router-dom";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { postApi } from "../services/apiClient";
 import { v4 as uuidv4 } from "uuid";
+import PasswordInput from "../components/common/PasswordInput";
 
 const Write = () => {
   // 작성 내용
@@ -38,11 +27,7 @@ const Write = () => {
 
   // 비밀번호 입력창
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+
   const passwordChangeHandler = (e) => {
     setPassword(e.target.value);
   };
@@ -120,28 +105,10 @@ const Write = () => {
             />
           </Grid>
           <Grid item md={2} xs={8}>
-            <FormControl variant="outlined">
-              <InputLabel htmlFor="password">비밀번호</InputLabel>
-              <OutlinedInput
-                id="password"
-                value={password}
-                onChange={passwordChangeHandler}
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
+            <PasswordInput
+              password={password}
+              passwordChangeHandler={passwordChangeHandler}
+            />
           </Grid>
           <Grid item md={1} xs={2}>
             <Button
