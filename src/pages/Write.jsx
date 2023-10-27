@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import WriteNotice from "../components/write/WriteNotice";
 import { Link, useNavigate } from "react-router-dom";
 import { postApi } from "../services/apiClient";
 import { v4 as uuidv4 } from "uuid";
 import PasswordInput from "../components/common/PasswordInput";
+import { Editor } from "@toast-ui/react-editor";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 const Write = () => {
   // 작성 내용
@@ -18,12 +20,15 @@ const Write = () => {
   };
   const [content, setContent] = useState("");
   const contentChangeHandler = (e) => {
-    setContent(e.target.value);
+    const editorInstance = editorRef.current.getInstance();
+    const content = editorInstance.getMarkdown();
+    setContent(content);
   };
   const [dungeon, setDungeon] = useState("");
 
   // nav
   const nav = useNavigate();
+  const editorRef = useRef();
 
   // 비밀번호 입력창
   const [password, setPassword] = useState("");
@@ -34,7 +39,9 @@ const Write = () => {
 
   // api
   const postClickHandler = () => {
-    postTaxidermy();
+    if (validCheck()) {
+      postTaxidermy();
+    }
   };
   const postTaxidermy = async () => {
     try {
@@ -55,7 +62,29 @@ const Write = () => {
       nav("/");
     }
   };
-  const validCheck = () => {};
+  const validCheck = () => {
+    if (title === "") {
+      alert("제목을 작성해주세요.");
+      return false;
+    }
+    if (title.length > 70) {
+      alert("제목은 70자 이하여야 합니다.");
+      return false;
+    }
+    if (dungeon === "") {
+      alert("레이드를 선택해주세요.");
+      return false;
+    }
+    if (nickname === "") {
+      alert("닉네임을 입력해주세요.");
+      return false;
+    }
+    if (content === "") {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
+    return true;
+  };
   return (
     <>
       <Box
@@ -127,15 +156,23 @@ const Write = () => {
             </Link>
           </Grid>
           <Grid item md={12} xs={12}>
-            <TextField
-              id="content"
-              label="내용"
-              multiline
-              rows={12}
-              value={content}
+            <Editor
+              previewStyle="vertical"
+              viewer={true}
+              height="1000px"
+              initialEditType="wysiwyg"
               onChange={contentChangeHandler}
-              fullWidth
-            />
+              usageStatistics={false}
+              hideModeSwitch={true}
+              toolbarItems={[
+                // 툴바 옵션 설정
+                ["heading", "bold", "italic", "strike"],
+                ["hr", "quote"],
+                ["ul", "ol", "task", "indent", "outdent"],
+                ["image"],
+              ]}
+              ref={editorRef}
+            ></Editor>
           </Grid>
         </Grid>
       </Box>

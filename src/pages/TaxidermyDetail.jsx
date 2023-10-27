@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -15,6 +15,9 @@ import { deleteApi, getApi, postApi } from "../services/apiClient";
 import moment from "moment/moment";
 import DetailNotice from "../components/detail/DetailNotice";
 import PasswordInput from "../components/common/PasswordInput";
+import { Editor, Viewer } from "@toast-ui/react-editor";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const TaxidermyDetail = () => {
   // 글 번호
@@ -30,7 +33,6 @@ const TaxidermyDetail = () => {
     createdAt: "",
     character: { classType: "", name: "", serverType: "" },
   });
-
   // use
   const nav = useNavigate();
 
@@ -98,6 +100,22 @@ const TaxidermyDetail = () => {
   useEffect(() => {
     getTaxidermy();
   }, []);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.getInstance().on("focus", () => {
+        editorRef.current.getInstance().blur();
+      });
+    }
+  }, []);
+
+  const editorRef = useRef();
+  useEffect(() => {
+    if (editorRef.current) {
+      const editorInstance = editorRef.current.getInstance();
+      editorInstance.setMarkdown(taxidermy.content);
+    }
+  }, [taxidermy.content]);
 
   return (
     <Box
@@ -258,17 +276,16 @@ const TaxidermyDetail = () => {
           </Link>
         </Grid>
         <Grid item md={12} xs={12}>
-          <TextField
-            id="content"
-            label="내용"
-            InputProps={{
-              readOnly: true,
-            }}
-            multiline
-            rows={12}
-            value={taxidermy.content}
-            fullWidth
-          />
+          <Editor
+            previewStyle="vertical"
+            height="auto"
+            initialEditType="wysiwyg"
+            initialValue={taxidermy.content}
+            usageStatistics={false}
+            hideModeSwitch={true}
+            toolbarItems={[]}
+            ref={editorRef}
+          ></Editor>
         </Grid>
       </Grid>
     </Box>

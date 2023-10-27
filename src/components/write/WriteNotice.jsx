@@ -35,7 +35,7 @@ const WriteNotice = () => {
       </Typography>
       <Typography variant="h6" gutterBottom>
         <LockIcon />
-        비밀번호 미 기입시 수정, 삭제가 불가합니다.
+        비밀번호 미 기입시 수정, 삭제가 불가능합니다.
       </Typography>
     </Paper>
   );

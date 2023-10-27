@@ -2,7 +2,6 @@ import React from "react";
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
-import GridViewIcon from "@mui/icons-material/GridView";
 import EditIcon from "@mui/icons-material/Edit";
 
 const MyHeader = () => {

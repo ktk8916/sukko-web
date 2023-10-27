@@ -3,6 +3,11 @@ import { Box, Button, Grid, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 const QuickSearchBar = ({ nickname, onChangHandler, onClickHandler }) => {
+  const onKeyPressHandler = (event) => {
+    if (event.key === "Enter") {
+      onClickHandler();
+    }
+  };
   return (
     <>
       <Box
@@ -23,6 +28,7 @@ const QuickSearchBar = ({ nickname, onChangHandler, onClickHandler }) => {
               variant="outlined"
               fullWidth
               onChange={onChangHandler}
+              onKeyUp={onKeyPressHandler}
             />
           </Grid>
           <Grid item md={1} xs={12}>

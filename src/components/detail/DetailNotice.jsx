@@ -13,13 +13,12 @@ const DetailNotice = () => {
         flexDirection: "column",
       }}
     >
-      {/*<Typography variant="h6" gutterBottom>*/}
-      {/*  <CameraAltIcon />*/}
-      {/*  증거사진 첨부를 원칙으로 합니다.*/}
-      {/*</Typography>*/}
       <Typography variant="h6" gutterBottom>
         <CancelIcon />
-        삭제 요청은 DM 보내주세요.
+        삭제 요청은 오픈카톡으로 문의주세요.
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        https://open.kakao.com/o/sEqg10Of
       </Typography>
     </Paper>
   );

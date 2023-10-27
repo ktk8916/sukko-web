@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getApi, putApi } from "../services/apiClient";
 import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import DetailNotice from "../components/detail/DetailNotice";
 import moment from "moment";
+import { Editor } from "@toast-ui/react-editor";
 
 const Update = () => {
   // 글 번호
   const { id } = useParams();
 
+  const editorRef = useRef();
   // 글 본문
   const [taxidermy, setTaxidermy] = useState({
     id: 0,
@@ -26,14 +28,9 @@ const Update = () => {
     setEditTitle(e.target.value);
   };
 
-  const [editContent, setEditContent] = useState("");
-  const editContentChangeHandler = (e) => {
-    setEditContent(e.target.value);
-  };
   const setEditField = (taxidermy) => {
     setEditDungeon(taxidermy.dungeonType);
     setEditTitle(taxidermy.title);
-    setEditContent(taxidermy.content);
   };
 
   // use
@@ -42,6 +39,12 @@ const Update = () => {
 
   // 비밀번호 입력창
   const [password, setPassword] = useState("");
+
+  const onClickHandler = () => {
+    if (validCheck()) {
+      putTaxidermy();
+    }
+  };
 
   // api
   const getTaxidermy = async () => {
@@ -56,9 +59,11 @@ const Update = () => {
   };
 
   const putTaxidermy = async () => {
+    const editorInstance = editorRef.current.getInstance();
+    const content = editorInstance.getMarkdown();
     const response = await putApi(`/api/v1/taxidermy/${id}`, {
       title: editTitle,
-      content: editContent,
+      content: content,
       dungeon: editDungeon,
       password: password,
     });
@@ -67,8 +72,7 @@ const Update = () => {
       alert(response.data.message);
       return;
     }
-
-    nav("/");
+    nav(-1);
   };
 
   useEffect(() => {
@@ -80,8 +84,30 @@ const Update = () => {
   }, [location]);
 
   useEffect(() => {
+    if (editorRef.current) {
+      const editorInstance = editorRef.current.getInstance();
+      editorInstance.setMarkdown(taxidermy.content);
+    }
+  }, [taxidermy.content]);
+
+  useEffect(() => {
     getTaxidermy();
   }, []);
+  const validCheck = () => {
+    if (editTitle === "") {
+      alert("제목을 작성해주세요.");
+      return false;
+    }
+    if (editTitle.length > 70) {
+      alert("제목은 70자 이하여야 합니다.");
+      return false;
+    }
+    if (editDungeon === "") {
+      alert("레이드를 선택해주세요.");
+      return false;
+    }
+    return true;
+  };
 
   return (
     <Box
@@ -165,28 +191,36 @@ const Update = () => {
           <Button
             sx={{ height: "100%", width: "100%" }}
             variant="outlined"
-            onClick={putTaxidermy}
+            onClick={onClickHandler}
           >
             수정
           </Button>
         </Grid>
         <Grid item md={1.5} xs={6}>
-          <Link to="/">
+          <Link to={-1}>
             <Button sx={{ height: "100%", width: "100%" }} variant="outlined">
               뒤로가기
             </Button>
           </Link>
         </Grid>
         <Grid item md={12} xs={12}>
-          <TextField
-            id="content"
-            label="내용"
-            multiline
-            rows={12}
-            value={editContent}
-            onChange={editContentChangeHandler}
-            fullWidth
-          />
+          <Editor
+            previewStyle="vertical"
+            viewer={true}
+            height="1000px"
+            initialEditType="wysiwyg"
+            initialValue={taxidermy.content}
+            usageStatistics={false}
+            hideModeSwitch={true}
+            toolbarItems={[
+              // 툴바 옵션 설정
+              ["heading", "bold", "italic", "strike"],
+              ["hr", "quote"],
+              ["ul", "ol", "task", "indent", "outdent"],
+              ["image"],
+            ]}
+            ref={editorRef}
+          ></Editor>
         </Grid>
       </Grid>
     </Box>
@@ -202,4 +236,5 @@ const dungeons = [
   "카양겔",
   "상아탑",
 ];
+
 export default Update;

@@ -26,9 +26,11 @@ const QuickSearchContainer = ({
         {relationTaxidermys.length === 0 && (
           <NotFoundNotice searchNickname={searchNickname} />
         )}
-        {relationTaxidermys.map((content, index) => (
-          <SummaryCard key={index} content={content} />
-        ))}
+        {relationTaxidermys.map((content, index) => {
+          if (content.character.name !== searchNickname) {
+            return <SummaryCard key={index} content={content} />;
+          }
+        })}
       </Grid>
     </Grid>
   );
