@@ -147,7 +147,6 @@ const TaxidermyDetail = () => {
             id="title"
             label="제목"
             variant="outlined"
-            multiline
             InputProps={{
               readOnly: true,
             }}

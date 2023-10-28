@@ -5,6 +5,9 @@ import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import DetailNotice from "../components/detail/DetailNotice";
 import moment from "moment";
 import { Editor } from "@toast-ui/react-editor";
+import UpdateNotice from "../components/update/UpdateNotice";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 const Update = () => {
   // 글 번호
@@ -109,6 +112,24 @@ const Update = () => {
     return true;
   };
 
+  const storage = getStorage();
+  const onUploadImage = async (blob, callback) => {
+    const today = new Date();
+    try {
+      const storageRef = ref(
+        storage,
+        `images/${today.getFullYear()}-${
+          today.getMonth() + 1
+        }-${today.getDate()}/${uuidv4()}`,
+      );
+      await uploadBytes(storageRef, blob);
+      const imageUrl = await getDownloadURL(storageRef);
+      callback(imageUrl, "image");
+    } catch (error) {
+      console.error("Image upload error:", error);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -120,7 +141,7 @@ const Update = () => {
     >
       <Grid container sx={{ maxWidth: "1400px" }} spacing={2}>
         <Grid item md={12} xs={12}>
-          <DetailNotice />
+          <UpdateNotice />
         </Grid>
         <Grid item md={2} xs={12}>
           <Autocomplete
@@ -219,6 +240,9 @@ const Update = () => {
               ["ul", "ol", "task", "indent", "outdent"],
               ["image"],
             ]}
+            hooks={{
+              addImageBlobHook: onUploadImage,
+            }}
             ref={editorRef}
           ></Editor>
         </Grid>

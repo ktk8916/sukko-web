@@ -23,12 +23,6 @@ const SummaryCard = ({ content }) => {
         <List>
           <ListItem divider>
             <ListItemIcon>
-              <TagIcon />
-            </ListItemIcon>
-            <ListItemText primary={content.id} />
-          </ListItem>
-          <ListItem divider>
-            <ListItemIcon>
               <CastleIcon />
             </ListItemIcon>
             <ListItemText primary={content.dungeonType} />

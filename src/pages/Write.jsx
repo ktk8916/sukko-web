@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import PasswordInput from "../components/common/PasswordInput";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const Write = () => {
   // 작성 내용
   const [title, setTitle] = useState("");
@@ -18,12 +18,7 @@ const Write = () => {
   const nicknameChangeHandler = (e) => {
     setNickname(e.target.value);
   };
-  const [content, setContent] = useState("");
-  const contentChangeHandler = (e) => {
-    const editorInstance = editorRef.current.getInstance();
-    const content = editorInstance.getMarkdown();
-    setContent(content);
-  };
+
   const [dungeon, setDungeon] = useState("");
 
   // nav
@@ -44,6 +39,8 @@ const Write = () => {
     }
   };
   const postTaxidermy = async () => {
+    const editorInstance = editorRef.current.getInstance();
+    const content = editorInstance.getMarkdown();
     try {
       const response = await postApi(`/api/v1/taxidermy`, {
         title,
@@ -79,11 +76,27 @@ const Write = () => {
       alert("닉네임을 입력해주세요.");
       return false;
     }
-    if (content === "") {
-      alert("내용을 입력해주세요.");
-      return false;
-    }
+
     return true;
+  };
+
+  const storage = getStorage();
+  const onUploadImage = async (blob, callback) => {
+    const today = new Date();
+    try {
+      const storageRef = ref(
+        storage,
+        `images/${today.getFullYear()}-${
+          today.getMonth() + 1
+        }-${today.getDate()}/${uuidv4()}`,
+      );
+
+      await uploadBytes(storageRef, blob);
+      const imageUrl = await getDownloadURL(storageRef);
+      callback(imageUrl, "image");
+    } catch (error) {
+      console.error("Image upload error:", error);
+    }
   };
   return (
     <>
@@ -161,7 +174,6 @@ const Write = () => {
               viewer={true}
               height="1000px"
               initialEditType="wysiwyg"
-              onChange={contentChangeHandler}
               usageStatistics={false}
               hideModeSwitch={true}
               toolbarItems={[
@@ -172,6 +184,9 @@ const Write = () => {
                 ["image"],
               ]}
               ref={editorRef}
+              hooks={{
+                addImageBlobHook: onUploadImage,
+              }}
             ></Editor>
           </Grid>
         </Grid>
