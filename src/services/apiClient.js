@@ -1,6 +1,7 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development" && "http://localhost:8080";
 
 const getApi = async (url) => {
   return axios({
